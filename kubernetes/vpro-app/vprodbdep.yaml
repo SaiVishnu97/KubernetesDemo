@@ -33,9 +33,29 @@ spec:
                name: app-secret
                key: db-pass
      
-      volumes:
-        - name: vpro-db-data
+    #    volumes:
+     #   - name: vpro-db-data
           # This AWS EBS volume must already exist.
-          awsElasticBlockStore:
-             volumeID: vol-0757f8de9ad24cd88
-             fsType: ext4
+      #    awsElasticBlockStore:
+       #      volumeID: vol-0757f8de9ad24cd88
+        #     fsType: ext4
+      volumes:
+      - name: vpro-db-data
+        persistentVolumeClaim:
+          claimName: formysql
+
+
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: formysql
+  namespace: default
+spec:
+  storageClassName: formysql
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
